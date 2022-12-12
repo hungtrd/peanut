@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"peanut/controller"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -17,6 +19,16 @@ type Server struct {
 func SetupServer(s *gorm.DB) Server {
 	// Init router
 	r := gin.New()
+
+	// Global middleware
+	// Logger middleware will write the logs to gin.DefaultWriter even if you set with GIN_MODE=release.
+	// By default gin.DefaultWriter = os.Stdout
+	r.Use(gin.Logger())
+
+	// Recovery middleware recovers from any panics and writes a 500 if there was one.
+	r.Use(gin.Recovery())
+
+	// CORS config
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"POST", "GET", "PATCH", "PUT", "DELETE"},
@@ -32,11 +44,11 @@ func SetupServer(s *gorm.DB) Server {
 		userCtrl := controller.NewUserController(s)
 		users := v1.Group("/users")
 		{
-			users.GET("", func(c *gin.Context) { userCtrl.GetUsers(c) })
-			users.GET("/:id", func(c *gin.Context) { userCtrl.GetUserByID(c) })
-			users.POST("", func(c *gin.Context) { userCtrl.CreateUser(c) })
-			users.PATCH("/:id", func(c *gin.Context) { userCtrl.UpdateUser(c) })
-			users.DELETE("/:id", func(c *gin.Context) { userCtrl.DeleteUserByID(c) })
+			users.GET("", userCtrl.GetUsers)
+			users.GET("/:id", userCtrl.GetUser)
+			users.POST("", userCtrl.CreateUser)
+			// users.PATCH("/:id", userCtrl.UpdateUser)
+			// users.DELETE("/:id", userCtrl.DeleteUserByID)
 		}
 	}
 
