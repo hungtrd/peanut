@@ -2,12 +2,12 @@
 Golang template for API server
 
 ## Setup
-Install packages
+- Install packages:\
 `go install`
-Update `.env`
-Install `air` for live-reload source code
-`go install github.com/cosmtrek/air@latest`
-Run project
+- Update `.env`
+- Install `air` for live-reload source code.\
+```go install github.com/cosmtrek/air@latest```
+- Run project:\
 `air`
 ## Rules
 - Domain: entities defination
