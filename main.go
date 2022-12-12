@@ -17,7 +17,7 @@ func main() {
 	dbClient := dbConnect()
 	server := infra.SetupServer(dbClient)
 
-	server.Router.Run()
+	server.Router.Run(":8080")
 }
 
 func dbConnect() *gorm.DB {
