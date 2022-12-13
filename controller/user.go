@@ -40,7 +40,14 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	c.Usecase.CreateUser(ctx, user)
+	err = c.Usecase.CreateUser(ctx, user)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": http.StatusText(http.StatusBadRequest),
+			"error":   err.Error(),
+		})
+		return
+	}
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message": http.StatusText(http.StatusCreated),
 	})

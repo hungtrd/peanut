@@ -16,6 +16,7 @@ func main() {
 
 	dbClient := dbConnect()
 	server := infra.SetupServer(dbClient)
+	infra.Migration(dbClient)
 
 	server.Router.Run(":8080")
 }

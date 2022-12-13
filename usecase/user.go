@@ -33,7 +33,7 @@ func (uc *userUsecase) GetUser(ctx context.Context, id int) (user *domain.User, 
 }
 
 func (uc *userUsecase) CreateUser(ctx context.Context, u domain.User) (err error) {
-	// TODO: hash password
+	u.HashPassword(u.Password)
 	_, err = uc.UserRepo.CreateUser(ctx, u)
 	if err != nil {
 		return err
