@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"peanut/utils"
+	"peanut/pkg/bcrypt"
 	"time"
 )
 
@@ -15,5 +15,5 @@ type User struct {
 }
 
 func (u *User) HashPassword(password string) {
-	u.Password = utils.GenerateFromPassword(password)
+	u.Password = bcrypt.GenerateFromPassword(password)
 }

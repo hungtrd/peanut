@@ -17,3 +17,5 @@ Golang template for API server
 ## Use
 - hash password\
 ```go get golang.org/x/crypto/bcrypt```
+- testcase\
+```go install github.com/golang/mock/mockgen@v1.6.0```
