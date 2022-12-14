@@ -20,6 +20,25 @@ func NewUserController(db *gorm.DB) *UserController {
 	}
 }
 
+func (c *UserController) Login(ctx *gin.Context) {
+	req := domain.RequestLogin{}
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	token, err := c.Usecase.Login(ctx, req)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "login success!",
+		"token":   "Bearer " + token,
+	})
+}
+
 func (c *UserController) GetUsers(ctx *gin.Context) {
 
 }

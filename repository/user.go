@@ -10,6 +10,7 @@ import (
 
 type UserRepo interface {
 	GetUsers(ctx context.Context) ([]domain.User, error)
+	GetUserByEmail(ctx context.Context, email string) domain.User
 	GetUser(ctx context.Context, id int) (*domain.User, error)
 	CreateUser(ctx context.Context, u domain.User) (*domain.User, error)
 }
@@ -24,6 +25,12 @@ func NewUserRepo(db *gorm.DB) UserRepo {
 
 func (r *userRepo) GetUsers(ctx context.Context) (users []domain.User, err error) {
 	return
+}
+
+func (r *userRepo) GetUserByEmail(ctx context.Context, email string) (users domain.User) {
+	var user = domain.User{}
+	r.DB.Where("email = ?", email).First(&user)
+	return user
 }
 
 func (r *userRepo) GetUser(ctx context.Context, id int) (user *domain.User, err error) {

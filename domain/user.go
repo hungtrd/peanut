@@ -1,7 +1,8 @@
 package domain
 
 import (
-	"peanut/pkg/bcrypt"
+	"github.com/golang-jwt/jwt/v4"
+	"peanut/pkg/hash"
 	"time"
 )
 
@@ -14,6 +15,21 @@ type User struct {
 	UpdatedAt time.Time
 }
 
+// Create the JWT key used to create the signature
+var jwtKey = []byte("my_secret_key")
+
+// Claims Create a struct that will be encoded to a JWT.
+// We add jwt.RegisteredClaims as an embedded type, to provide fields like expiry time
+type Claims struct {
+	Username string `json:"username"`
+	jwt.RegisteredClaims
+}
+
 func (u *User) HashPassword(password string) {
-	u.Password = bcrypt.GenerateFromPassword(password)
+	u.Password = hash.GenerateFromPassword(password)
+}
+
+type RequestLogin struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
 }
