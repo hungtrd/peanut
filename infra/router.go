@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"peanut/controller"
+	"peanut/middleware"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -28,6 +29,11 @@ func SetupServer(s *gorm.DB) Server {
 	// Recovery middleware recovers from any panics and writes a 500 if there was one.
 	r.Use(gin.Recovery())
 
+	// Custom middleware
+	r.Use(middleware.HandleError)
+	r.NoRoute(middleware.HandleNoRoute)
+	r.NoMethod(middleware.HandleNoMethod)
+
 	// CORS config
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
@@ -45,8 +51,8 @@ func SetupServer(s *gorm.DB) Server {
 		users := v1.Group("/users")
 		{
 			users.GET("", userCtrl.GetUsers)
-			users.GET("/:id", userCtrl.GetUser)
 			users.POST("", userCtrl.CreateUser)
+			users.GET("/:id", userCtrl.GetUser)
 			// users.PATCH("/:id", userCtrl.UpdateUser)
 			// users.DELETE("/:id", userCtrl.DeleteUserByID)
 		}

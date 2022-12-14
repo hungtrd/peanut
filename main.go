@@ -5,6 +5,7 @@ import (
 	"log"
 	"peanut/config"
 	"peanut/infra"
+	"peanut/pkg/i18n"
 
 	"gorm.io/gorm"
 )
@@ -13,6 +14,8 @@ func main() {
 	fmt.Println("---- Hello world! ----")
 
 	config.Setup()
+
+	i18n.SetupI18n()
 
 	dbClient := dbConnect()
 	server := infra.SetupServer(dbClient)

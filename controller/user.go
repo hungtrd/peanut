@@ -1,9 +1,8 @@
 package controller
 
 import (
-	"log"
-	"net/http"
 	"peanut/domain"
+	"peanut/pkg/response"
 	"peanut/usecase"
 
 	"github.com/gin-gonic/gin"
@@ -30,18 +29,14 @@ func (c *UserController) GetUser(ctx *gin.Context) {
 
 func (c *UserController) CreateUser(ctx *gin.Context) {
 	user := domain.User{}
-	err := ctx.ShouldBindJSON(&user)
-	if err != nil {
-		res := ctx.Error(err).SetType(gin.ErrorTypeBind)
-		log.Printf("Error: %v", res)
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": http.StatusText(http.StatusBadRequest),
-		})
+	if !bindJSON(ctx, &user) {
 		return
 	}
 
-	c.Usecase.CreateUser(ctx, user)
-	ctx.JSON(http.StatusCreated, gin.H{
-		"message": http.StatusText(http.StatusCreated),
-	})
+	err := c.Usecase.CreateUser(ctx, user)
+	if checkError(ctx, err) {
+		return
+	}
+
+	response.OK(ctx, nil)
 }
