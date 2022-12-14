@@ -1,10 +1,10 @@
 package controller
 
 import (
+	user2 "golang_first_pj/domain/request/user"
+	"golang_first_pj/usecase"
 	"log"
 	"net/http"
-	"peanut/domain"
-	"peanut/usecase"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -29,7 +29,7 @@ func (c *UserController) GetUser(ctx *gin.Context) {
 }
 
 func (c *UserController) CreateUser(ctx *gin.Context) {
-	user := domain.User{}
+	user := user2.CreateUserReq{}
 	err := ctx.ShouldBindJSON(&user)
 	if err != nil {
 		res := ctx.Error(err).SetType(gin.ErrorTypeBind)
@@ -39,7 +39,6 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 		})
 		return
 	}
-
 	c.Usecase.CreateUser(ctx, user)
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message": http.StatusText(http.StatusCreated),
