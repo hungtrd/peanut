@@ -14,3 +14,8 @@ Golang template for API server
 - Controller: binding data, validation
 - Usecase: write business logic
 - Repository: get data from storage (DB, firebase, bigquery,..)
+## Use
+- hash password\
+```go get golang.org/x/crypto/bcrypt```
+- testcase\
+```go install github.com/golang/mock/mockgen@v1.6.0```
