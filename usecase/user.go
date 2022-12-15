@@ -28,7 +28,10 @@ func NewUserUsecase(db *gorm.DB) UserUsecase {
 }
 
 func (uc *userUsecase) Login(ctx context.Context, req domain.RequestLogin) (token string, err error) {
-	user := uc.UserRepo.GetUserByEmail(ctx, req.Email)
+	user, err := uc.UserRepo.GetUserByEmail(ctx, req.Email)
+	if err != nil {
+		return "", fmt.Errorf("login fail")
+	}
 	result := hash.CompareHashAndPassword(user.Password, req.Password)
 	if !result {
 		return "", fmt.Errorf("login fail")
@@ -37,11 +40,20 @@ func (uc *userUsecase) Login(ctx context.Context, req domain.RequestLogin) (toke
 }
 
 func (uc *userUsecase) GetUsers(ctx context.Context) (users []domain.User, err error) {
-	return
+	users, err = uc.UserRepo.GetUsers(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }
 
 func (uc *userUsecase) GetUser(ctx context.Context, id int) (user *domain.User, err error) {
-	return
+	user, err = uc.UserRepo.GetUser(ctx, id)
+
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
 func (uc *userUsecase) CreateUser(ctx context.Context, u domain.User) (err error) {

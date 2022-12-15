@@ -51,6 +51,7 @@ func SetupServer(s *gorm.DB) Server {
 		{
 			users.Use(middleware.JwtAuthMiddleware())
 
+			users.GET("current", userCtrl.CurrentUser)
 			users.GET("", userCtrl.GetUsers)
 			users.GET("/:id", userCtrl.GetUser)
 			users.POST("", userCtrl.CreateUser)
