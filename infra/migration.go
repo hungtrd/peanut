@@ -8,6 +8,7 @@ import (
 func Migration(db *gorm.DB) {
 	db.AutoMigrate(
 		&domain.User{},
+		&domain.Todo{},
 	)
 	return
 }
