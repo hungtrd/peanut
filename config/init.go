@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/joho/godotenv"
@@ -15,5 +14,6 @@ func init() {
 }
 
 func Setup() {
-	fmt.Println("Initial configuration")
+	setEnv()
+	setGinMode()
 }
