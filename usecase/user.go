@@ -4,8 +4,6 @@ import (
 	"context"
 	"peanut/domain"
 	"peanut/repository"
-
-	"gorm.io/gorm"
 )
 
 type UserUsecase interface {
@@ -18,9 +16,9 @@ type userUsecase struct {
 	UserRepo repository.UserRepo
 }
 
-func NewUserUsecase(db *gorm.DB) UserUsecase {
+func NewUserUsecase(r repository.UserRepo) UserUsecase {
 	return &userUsecase{
-		UserRepo: repository.NewUserRepo(db),
+		UserRepo: r,
 	}
 }
 
