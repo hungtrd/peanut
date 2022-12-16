@@ -5,6 +5,7 @@ import (
 	"peanut/config"
 	"peanut/domain"
 	"peanut/pkg/response"
+	"peanut/repository"
 	"peanut/usecase"
 
 	"github.com/gin-gonic/gin"
@@ -18,7 +19,7 @@ type UserController struct {
 func NewUserController(db *gorm.DB) *UserController {
 	fmt.Println(config.IsDevelopment())
 	return &UserController{
-		Usecase: usecase.NewUserUsecase(db),
+		Usecase: usecase.NewUserUsecase( repository.NewUserRepo(db)),
 	}
 }
 
