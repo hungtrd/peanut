@@ -2,6 +2,7 @@ package infra
 
 import (
 	"net/http"
+	"peanut/middleware"
 	"time"
 
 	"peanut/controller"
@@ -42,8 +43,15 @@ func SetupServer(s *gorm.DB) Server {
 	v1 := r.Group("api/v1")
 	{
 		userCtrl := controller.NewUserController(s)
+
+		v1.POST("login", userCtrl.Login)
+		v1.POST("register", userCtrl.CreateUser)
+
 		users := v1.Group("/users")
 		{
+			users.Use(middleware.JwtAuthMiddleware())
+
+			users.GET("current", userCtrl.CurrentUser)
 			users.GET("", userCtrl.GetUsers)
 			users.GET("/:id", userCtrl.GetUser)
 			users.POST("", userCtrl.CreateUser)

@@ -19,3 +19,5 @@ Golang template for API server
 ```go get golang.org/x/crypto/bcrypt```
 - testcase\
 ```go install github.com/golang/mock/mockgen@v1.6.0```
+- jwt\
+```go get -u github.com/golang-jwt/jwt/v4```
