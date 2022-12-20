@@ -18,13 +18,14 @@ func main() {
 	i18n.SetupI18n()
 
 	dbClient := dbConnect()
+	infra.Migration(dbClient)
 	server := infra.SetupServer(dbClient)
 
 	server.Router.Run(":8080")
 }
 
 func dbConnect() *gorm.DB {
-	db, err := infra.PostgresOpen()
+	db, err := infra.ConnectMySQL()
 	if err != nil {
 		log.Fatal("[main] DB connect error: ", err)
 	}

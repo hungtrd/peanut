@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"net/http"
 	"peanut/domain"
 	"peanut/pkg/response"
 	"peanut/usecase"
@@ -33,10 +34,24 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	err := c.Usecase.CreateUser(ctx, user)
+	err := c.Usecase.CreateUser(user)
 	if checkError(ctx, err) {
 		return
 	}
 
 	response.OK(ctx, nil)
+}
+
+func (c *UserController) Login(ctx *gin.Context) {
+	var loginForm domain.LoginForm
+	bindJSON(ctx, &loginForm)
+	tokenString, err := c.Usecase.Login(ctx, loginForm)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest,
+			domain.Response{false, nil, err.Error()},
+		)
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"token": tokenString, "message": "login success"})
 }

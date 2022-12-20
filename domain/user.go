@@ -1,12 +1,17 @@
 package domain
 
-import "time"
+import (
+	"gorm.io/gorm"
+)
 
 type User struct {
-	ID        string `json:"id"`
-	Username  string `json:"username" binding:"required"`
-	Email     string `json:"email" binding:"required,email"`
-	Password  string `json:"password" binding:"required"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	gorm.Model
+	Username string `json:"username" binding:"required" gorm:"unique"`
+	Email    string `json:"email" binding:"required,email" gorm:"unique"`
+	Password string `json:"password" binding:"required"`
+}
+
+type LoginForm struct {
+	Username string
+	Password string
 }

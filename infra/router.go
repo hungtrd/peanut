@@ -17,7 +17,7 @@ type Server struct {
 	Store  *gorm.DB
 }
 
-func SetupServer(s *gorm.DB) Server {
+func SetupServer(store *gorm.DB) Server {
 	// Init router
 	r := gin.New()
 
@@ -47,24 +47,40 @@ func SetupServer(s *gorm.DB) Server {
 	// Config route
 	v1 := r.Group("api/v1")
 	{
-		userCtrl := controller.NewUserController(s)
+		userCtrl := controller.NewUserController(store)
+		bookCrtl := controller.NewBookController(store)
+		auth := v1.Group("/auth")
+		{
+			auth.POST("/login", userCtrl.Login)
+			auth.POST("/signup", userCtrl.CreateUser)
+		}
 		users := v1.Group("/users")
 		{
-			users.GET("", userCtrl.GetUsers)
-			users.POST("", userCtrl.CreateUser)
-			users.GET("/:id", userCtrl.GetUser)
+			users.GET("", middleware.Authentication, userCtrl.GetUsers)
+			users.POST("", middleware.Authentication, userCtrl.CreateUser)
+			users.GET("/:id", middleware.Authentication, userCtrl.GetUser)
 			// users.PATCH("/:id", userCtrl.UpdateUser)
 			// users.DELETE("/:id", userCtrl.DeleteUserByID)
 		}
+
+		books := v1.Group("/books")
+		{
+			books.GET("", middleware.Authentication, bookCrtl.GetBooks)
+			books.POST("", middleware.Authentication, bookCrtl.CreateBook)
+			books.POST("/:id", middleware.Authentication, bookCrtl.GetBook)
+			books.PUT("/:id", middleware.Authentication, bookCrtl.UpdateBook)
+			books.DELETE("/:id", middleware.Authentication, bookCrtl.DeleteBook)
+		}
+
 	}
 
 	// health check
-	r.GET("api/health", func(c *gin.Context) {
+	r.GET("api/health", middleware.Authentication, func(c *gin.Context) {
 		c.Status(http.StatusOK)
 	})
 
 	return Server{
-		Store:  s,
+		Store:  store,
 		Router: r,
 	}
 }

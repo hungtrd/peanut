@@ -1,8 +1,9 @@
 package domain
 
 type Response struct {
-	Message string      `json:"message"`
+	Success bool        `json:"success"`
 	Data    interface{} `json:"data,omitempty"`
+	Message string      `json:"message"`
 }
 
 type ErrorResponse struct {
