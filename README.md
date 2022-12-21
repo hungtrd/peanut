@@ -48,10 +48,10 @@ $ ginkgo ./...
 
 - Install package:
   `$ go install github.com/swaggo/swag/cmd/swag@latest`
-- Generate docs folder:
+- Generate docs folder:\
   Write annotations before main() function and run:\
   `$ swag init`
-- Generate API docs
+- Generate API docs:\
   Write annotations before gin controller and run:\
   `$ swag init`
 
