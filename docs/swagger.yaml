@@ -1,5 +1,29 @@
-basePath: /api/v1
+basePath: /api
 definitions:
+  domain.CreateBookReq:
+    properties:
+      author:
+        type: string
+      description:
+        type: string
+      title:
+        type: string
+    required:
+    - author
+    - description
+    - title
+    type: object
+  domain.CreateBookResp:
+    properties:
+      author:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
   domain.ErrorDetail:
     properties:
       error_code:
@@ -20,9 +44,62 @@ definitions:
           $ref: '#/definitions/domain.ErrorDetail'
         type: array
     type: object
+  domain.LoginReq:
+    properties:
+      password:
+        example: thisispassword
+        type: string
+      username:
+        example: hungtran
+        type: string
+        x-order: "1"
+    required:
+    - password
+    - username
+    type: object
+  domain.Response:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+  domain.SignupReq:
+    properties:
+      display_name:
+        example: Hung Tran
+        type: string
+        x-order: "2"
+      email:
+        example: hung@example.com
+        type: string
+        x-order: "3"
+      password:
+        example: thisispassword
+        type: string
+        x-order: "4"
+      username:
+        example: hungtran
+        type: string
+        x-order: "1"
+    required:
+    - display_name
+    - email
+    - password
+    - username
+    type: object
+  domain.SignupResp:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3Jpem...
+        type: string
+    type: object
   domain.User:
     properties:
       createdAt:
+        type: string
+      deletedAt:
+        type: string
+      displayName:
         type: string
       email:
         type: string
@@ -34,26 +111,53 @@ definitions:
         type: string
       username:
         type: string
-    required:
-    - email
-    - password
-    - username
     type: object
 host: localhost:8080
 info:
-  contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
+  contact: {}
   description: This is a sample server celler server.
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
   title: Swagger Example API
   version: "1.0"
 paths:
-  /users/{id}:
+  /v1/books:
+    post:
+      consumes:
+      - application/json
+      description: Create book
+      parameters:
+      - description: Create book request
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateBookReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/domain.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.CreateBookResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Create book
+      tags:
+      - book
+  /v1/users/{id}:
     get:
       consumes:
       - application/json
@@ -83,10 +187,84 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - Bearer: []
       summary: Create an user
       tags:
       - user
+  /v1/users/login:
+    post:
+      consumes:
+      - application/json
+      description: API Login
+      parameters:
+      - description: Login request
+        in: body
+        name: login_param
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/domain.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.LoginReq'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      summary: User Login
+      tags:
+      - user
+  /v1/users/signup:
+    post:
+      consumes:
+      - application/json
+      description: Sign Up
+      parameters:
+      - description: Sign up request
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/domain.SignupReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/domain.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.SignupResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      summary: SignUp
+      tags:
+      - user
 securityDefinitions:
-  BasicAuth:
-    type: basic
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

@@ -10,22 +10,17 @@ import (
 	"gorm.io/gorm"
 )
 
-// @title           Swagger Example API
-// @version         1.0
-// @description     This is a sample server celler server.
-// @termsOfService  http://swagger.io/terms/
+//	@title			Swagger Example API
+//	@version		1.0
+//	@description	This is a sample server celler server.
+//	@termsOfService	http://swagger.io/terms/
 
-// @contact.name   API Support
-// @contact.url    http://www.swagger.io/support
-// @contact.email  support@swagger.io
+//	@host		localhost:8080
+//	@BasePath	/api
 
-// @license.name  Apache 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-
-// @host      localhost:8080
-// @BasePath  /api/v1
-
-// @securityDefinitions.basic  BasicAuth
+// @securityDefinitions.apikey	Bearer
+// @in							header
+// @name						Authorization
 func main() {
 	fmt.Println("---- Hello world! ----")
 
@@ -35,6 +30,7 @@ func main() {
 
 	dbClient := dbConnect()
 	server := infra.SetupServer(dbClient)
+	infra.Migration(dbClient)
 
 	server.Router.Run(":8080")
 }
