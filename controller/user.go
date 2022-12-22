@@ -52,14 +52,14 @@ func (c *UserController) GetUsers(ctx *gin.Context) {
 }
 
 func (c *UserController) CurrentUser(ctx *gin.Context) {
-	userId, err := jwt.ExtractTokenID(ctx)
+	userID, err := jwt.ExtractTokenID(ctx)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	u, err := c.Usecase.GetUser(ctx, userId)
+	u, err := c.Usecase.GetUser(ctx, userID)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

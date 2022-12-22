@@ -43,6 +43,7 @@ func SetupServer(s *gorm.DB) Server {
 	v1 := r.Group("api/v1")
 	{
 		userCtrl := controller.NewUserController(s)
+		todoCtrl := controller.NewTodoController(s)
 
 		v1.POST("login", userCtrl.Login)
 		v1.POST("register", userCtrl.CreateUser)
@@ -57,6 +58,14 @@ func SetupServer(s *gorm.DB) Server {
 			users.POST("", userCtrl.CreateUser)
 			// users.PATCH("/:id", userCtrl.UpdateUser)
 			// users.DELETE("/:id", userCtrl.DeleteUserByID)
+
+			todo := users.Group("/todo")
+			{
+				todo.GET("", todoCtrl.ListTodo)
+				todo.POST("", todoCtrl.CreateTodo)
+				todo.PATCH("/:id", todoCtrl.UpdateTodo)
+				todo.DELETE("/:id", todoCtrl.DeleteTodo)
+			}
 		}
 	}
 

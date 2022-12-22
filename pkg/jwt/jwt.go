@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func GenerateToken(userId uint) (string, error) {
+func GenerateToken(userID uint) (string, error) {
 
 	tokenLifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
 
@@ -20,7 +20,7 @@ func GenerateToken(userId uint) (string, error) {
 
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
-	claims["user_id"] = userId
+	claims["user_id"] = userID
 	claims["exp"] = time.Now().Add(time.Hour * time.Duration(tokenLifespan)).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
