@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"peanut/domain"
 	"peanut/pkg/jwt"
+	"peanut/repository"
 	"peanut/usecase"
 	"strconv"
 
@@ -18,7 +19,7 @@ type UserController struct {
 
 func NewUserController(db *gorm.DB) *UserController {
 	return &UserController{
-		Usecase: usecase.NewUserUsecase(db),
+		Usecase: usecase.NewUserUsecase(repository.NewUserRepo(db)),
 	}
 }
 
