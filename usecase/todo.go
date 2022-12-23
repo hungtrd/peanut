@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"gorm.io/gorm"
 	"peanut/domain"
 	"peanut/repository"
 )
@@ -17,9 +16,9 @@ type todoUsecase struct {
 	TodoRepo repository.TodoRepo
 }
 
-func NewTodoUsecase(db *gorm.DB) TodoUsecase {
+func NewTodoUsecase(repo repository.TodoRepo) TodoUsecase {
 	return &todoUsecase{
-		TodoRepo: repository.NewTodoRepo(db),
+		TodoRepo: repo,
 	}
 }
 

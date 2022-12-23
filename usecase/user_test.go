@@ -36,11 +36,6 @@ var _ = Describe("User", func() {
 			Password: p,
 		}
 		user.ID = 1
-
-		users = []domain.User{
-			user,
-			register,
-		}
 	})
 
 	Describe("API Login", func() {
@@ -102,6 +97,10 @@ var _ = Describe("User", func() {
 		})
 
 		Context("- Get list user", func() {
+			users = []domain.User{
+				user,
+				register,
+			}
 			It("should be success", func() {
 				// prepare
 				userRepo.EXPECT().GetUsers().Return(users, nil)

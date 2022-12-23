@@ -18,7 +18,9 @@ import (
 var ctx context.Context
 var db *gorm.DB
 var userRepo *mock.MockUserRepo
+var todoRepo *mock.MockTodoRepo
 var userUc usecase.UserUsecase
+var todoUc usecase.TodoUsecase
 
 func TestUsecase(t *testing.T) {
 	RegisterFailHandler(Fail)
@@ -42,4 +44,7 @@ var _ = BeforeSuite(func() {
 	defer ctrl.Finish()
 	userRepo = mock.NewMockUserRepo(ctrl)
 	userUc = usecase.NewUserUsecase(userRepo)
+
+	todoRepo = mock.NewMockTodoRepo(ctrl)
+	todoUc = usecase.NewTodoUsecase(todoRepo)
 })
