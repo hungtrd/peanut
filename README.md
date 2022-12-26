@@ -31,7 +31,7 @@ $ go get github.com/onsi/gomega/...
 ```
 $ cd to/pkg/is/tested
 $ ginkgo bootstrap
-$ ginkgo generate %FILENAME%
+$ ginkgo generate <file_name>
 ```
 
 - Run test:
@@ -43,6 +43,23 @@ $ go test ./usecase
 // or run all test in project
 $ ginkgo ./...
 ```
+
+## DB Migration
+
+- Install cmd package:
+  `$ go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest`
+- Create migration files:
+  `$ migrate create -ext sql -dir db/migration -seq <file_name>`
+- Run migrate:
+  - UP:
+    `$ migrate -path db/migration -database "postgres://<user>:<pwd>@localhost:5432/<db_name>?sslmode=disable" -verbose up`
+  - DOWN:
+    `$ migrate -path db/migration -database "postgres://<user>:<pwd>@localhost:5432/<db_name>?sslmode=disable" -verbose down`
+  - Or use makefile
+    ```
+    $ make migrateup
+    $ make migratedown
+    ```
 
 ## API docs:
 
