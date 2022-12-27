@@ -6,6 +6,7 @@ import (
 	"peanut/config"
 	"peanut/infra"
 	"peanut/middleware"
+	"peanut/pkg/i18n"
 
 	"gorm.io/gorm"
 )
@@ -14,6 +15,7 @@ func main() {
 	fmt.Println("---- Hello world! ----")
 
 	config.Setup()
+	i18n.SetupI18n()
 	middleware.ValidateFunction()
 
 	dbClient := dbConnect()
