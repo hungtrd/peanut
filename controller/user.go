@@ -1,10 +1,9 @@
 package controller
 
 import (
-	"log"
-	"net/http"
 	"peanut/domain"
 	"peanut/pkg/jwt"
+	"peanut/pkg/response"
 	"peanut/repository"
 	"peanut/usecase"
 	"strconv"
@@ -25,91 +24,61 @@ func NewUserController(db *gorm.DB) *UserController {
 
 func (c *UserController) Login(ctx *gin.Context) {
 	req := domain.RequestLogin{}
-	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if !bindJSON(ctx, &req) {
 		return
 	}
 	token, err := c.Usecase.Login(ctx, req)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+	if checkError(ctx, err) {
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "login success!",
-		"token":   "Bearer " + token,
+	response.OK(ctx, gin.H{
+		"token": "Bearer " + token,
 	})
 }
 
 func (c *UserController) GetUsers(ctx *gin.Context) {
 	users, err := c.Usecase.GetUsers(ctx)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if checkError(ctx, err) {
 		return
 	}
-
-	ctx.JSON(http.StatusOK, gin.H{"message": "success", "data": users})
+	response.OK(ctx, users)
 }
 
 func (c *UserController) CurrentUser(ctx *gin.Context) {
 	userID, err := jwt.ExtractTokenID(ctx)
-
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if checkError(ctx, err) {
 		return
 	}
 
 	u, err := c.Usecase.GetUser(ctx, userID)
-
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if checkError(ctx, err) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "success", "data": u})
+	response.OK(ctx, u)
 }
 
 func (c *UserController) GetUser(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"code":    http.StatusText(http.StatusBadRequest),
-			"message": "id invalid",
-		})
-	}
-	user, err := c.Usecase.GetUser(ctx, id)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"code":    http.StatusText(http.StatusBadRequest),
-			"message": err.Error(),
-		})
+	if checkError(ctx, err) {
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"message": "success", "data": user})
+	user, err := c.Usecase.GetUser(ctx, id)
+	if checkError(ctx, err) {
+		return
+	}
+	response.OK(ctx, user)
 }
 
 func (c *UserController) CreateUser(ctx *gin.Context) {
 	user := domain.User{}
-	err := ctx.ShouldBindJSON(&user)
-	if err != nil {
-		res := ctx.Error(err).SetType(gin.ErrorTypeBind)
-		log.Printf("Error: %v", res)
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": http.StatusText(http.StatusBadRequest),
-		})
+	if !bindJSON(ctx, &user) {
 		return
 	}
 
-	err = c.Usecase.CreateUser(ctx, user)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": http.StatusText(http.StatusBadRequest),
-			"error":   err.Error(),
-		})
+	err := c.Usecase.CreateUser(ctx, user)
+	if checkError(ctx, err) {
 		return
 	}
-	ctx.JSON(http.StatusCreated, gin.H{
-		"message": http.StatusText(http.StatusCreated),
-	})
+	response.OK(ctx, nil)
 }
