@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 	"fmt"
-	"gorm.io/gorm"
 	"peanut/domain"
 	"peanut/pkg/hash"
 	"peanut/pkg/jwt"
@@ -21,14 +20,14 @@ type userUsecase struct {
 	UserRepo repository.UserRepo
 }
 
-func NewUserUsecase(db *gorm.DB) UserUsecase {
+func NewUserUsecase(repo repository.UserRepo) UserUsecase {
 	return &userUsecase{
-		UserRepo: repository.NewUserRepo(db),
+		UserRepo: repo,
 	}
 }
 
 func (uc *userUsecase) Login(ctx context.Context, req domain.RequestLogin) (token string, err error) {
-	user, err := uc.UserRepo.GetUserByEmail(ctx, req.Email)
+	user, err := uc.UserRepo.GetUserByEmail(req.Email)
 	if err != nil {
 		return "", fmt.Errorf("login fail")
 	}
@@ -40,7 +39,7 @@ func (uc *userUsecase) Login(ctx context.Context, req domain.RequestLogin) (toke
 }
 
 func (uc *userUsecase) GetUsers(ctx context.Context) (users []domain.User, err error) {
-	users, err = uc.UserRepo.GetUsers(ctx)
+	users, err = uc.UserRepo.GetUsers()
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +47,7 @@ func (uc *userUsecase) GetUsers(ctx context.Context) (users []domain.User, err e
 }
 
 func (uc *userUsecase) GetUser(ctx context.Context, id int) (user *domain.User, err error) {
-	user, err = uc.UserRepo.GetUser(ctx, id)
+	user, err = uc.UserRepo.GetUser(id)
 
 	if err != nil {
 		return nil, err
@@ -58,7 +57,7 @@ func (uc *userUsecase) GetUser(ctx context.Context, id int) (user *domain.User, 
 
 func (uc *userUsecase) CreateUser(ctx context.Context, u domain.User) (err error) {
 	u.HashPassword(u.Password)
-	_, err = uc.UserRepo.CreateUser(ctx, u)
+	_, err = uc.UserRepo.CreateUser(u)
 	if err != nil {
 		return err
 	}

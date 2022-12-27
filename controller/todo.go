@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"peanut/domain"
 	"peanut/pkg/jwt"
+	"peanut/repository"
 	"peanut/usecase"
 	"strconv"
 )
@@ -16,7 +17,7 @@ type TodoController struct {
 
 func NewTodoController(db *gorm.DB) *TodoController {
 	return &TodoController{
-		Todo: usecase.NewTodoUsecase(db),
+		Todo: usecase.NewTodoUsecase(repository.NewTodoRepo(db)),
 	}
 }
 
