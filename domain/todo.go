@@ -10,7 +10,7 @@ type Todo struct {
 	UserID  uint   `json:"user_id"`
 	Title   string `json:"title" binding:"required" gorm:"size:30"`
 	Content string `json:"content" binding:"required" gorm:"size:500"`
-}
+} //@name Todo
 
 type ListTodo struct {
 	ID        uint   `json:"id" gorm:"primaryKey"`
@@ -18,4 +18,4 @@ type ListTodo struct {
 	Title     string `json:"title" binding:"required" gorm:"size:30"`
 	Content   string `json:"content" binding:"required" gorm:"size:500"`
 	CreatedAt time.Time
-}
+} //@name ListTodo
