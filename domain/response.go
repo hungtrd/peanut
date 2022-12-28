@@ -3,7 +3,7 @@ package domain
 type Response struct {
 	Message string      `json:"message"`
 	Data    interface{} `json:"data,omitempty"`
-}
+} //@name Response
 
 type ErrorResponse struct {
 	Code         string        `json:"code"`
