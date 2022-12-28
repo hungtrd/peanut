@@ -57,8 +57,8 @@ $ ginkgo ./...
     `$ migrate -path db/migration -database "postgres://<user>:<pwd>@localhost:5432/<db_name>?sslmode=disable" -verbose down`
   - Or use makefile
     ```
-    $ make migrateup
-    $ make migratedown
+    $ make migrateup step=1
+    $ make migratedown step=2
     ```
 
 ## Use
