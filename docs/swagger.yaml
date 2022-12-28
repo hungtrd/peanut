@@ -7,6 +7,22 @@ definitions:
       debug_message:
         type: string
     type: object
+  ListTodo:
+    properties:
+      content:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      username:
+        type: string
+    required:
+    - content
+    - title
+    type: object
   RequestLogin:
     properties:
       email:
@@ -16,6 +32,12 @@ definitions:
     required:
     - email
     - password
+    type: object
+  Response:
+    properties:
+      data: {}
+      message:
+        type: string
     type: object
   User:
     properties:
@@ -34,12 +56,6 @@ definitions:
     required:
     - email
     - username
-    type: object
-  domain.Response:
-    properties:
-      data: {}
-      message:
-        type: string
     type: object
   gorm.DeletedAt:
     properties:
@@ -81,7 +97,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Response'
+            $ref: '#/definitions/Response'
         "400":
           description: Bad Request
           schema:
@@ -111,7 +127,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Response'
+            $ref: '#/definitions/Response'
         "400":
           description: Bad Request
           schema:
@@ -260,6 +276,115 @@ paths:
       summary: Get current user
       tags:
       - User
+  /users/todo:
+    delete:
+      consumes:
+      - application/json
+      description: delete todo
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - Bearer: []
+      summary: delete todo
+      tags:
+      - Todo
+    get:
+      consumes:
+      - application/json
+      description: create todo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - Bearer: []
+      summary: create todo
+      tags:
+      - Todo
+    patch:
+      consumes:
+      - application/json
+      description: update todo
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update todo
+      tags:
+      - Todo
+    post:
+      consumes:
+      - application/json
+      description: list todo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ListTodo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - Bearer: []
+      summary: list todo
+      tags:
+      - Todo
 securityDefinitions:
   BearerAuth:
     in: header

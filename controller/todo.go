@@ -21,6 +21,18 @@ func NewTodoController(db *gorm.DB) *TodoController {
 	}
 }
 
+// ListTodo godoc
+//
+//	@Summary		list todo
+//	@Description	list todo
+//	@Tags			Todo
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	domain.ListTodo
+//	@Failure		400	{object}	domain.ErrorResponse
+//	@Failure		500	{object}	domain.ErrorResponse
+//	@Security		Bearer
+//	@Router			/users/todo [post]
 func (c *TodoController) ListTodo(ctx *gin.Context) {
 	userID, _ := jwt.ExtractTokenID(ctx)
 	todos, err := c.Todo.ListTodo(userID)
@@ -37,6 +49,18 @@ func (c *TodoController) ListTodo(ctx *gin.Context) {
 	})
 }
 
+// CreateTodo godoc
+//
+//	@Summary		create todo
+//	@Description	create todo
+//	@Tags			Todo
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	domain.Response
+//	@Failure		400	{object}	domain.ErrorResponse
+//	@Failure		500	{object}	domain.ErrorResponse
+//	@Security		Bearer
+//	@Router			/users/todo [get]
 func (c *TodoController) CreateTodo(ctx *gin.Context) {
 	todo := domain.Todo{}
 	err := ctx.ShouldBindJSON(&todo)
@@ -61,6 +85,19 @@ func (c *TodoController) CreateTodo(ctx *gin.Context) {
 	return
 }
 
+// UpdateTodo godoc
+//
+//	@Summary		update todo
+//	@Description	update todo
+//	@Tags			Todo
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Todo ID"
+//	@Success		200	{object}	domain.Response
+//	@Failure		400	{object}	domain.ErrorResponse
+//	@Failure		500	{object}	domain.ErrorResponse
+//	@Security		Bearer
+//	@Router			/users/todo [patch]
 func (c *TodoController) UpdateTodo(ctx *gin.Context) {
 	todoID, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
@@ -90,6 +127,19 @@ func (c *TodoController) UpdateTodo(ctx *gin.Context) {
 	})
 }
 
+// DeleteTodo godoc
+//
+//	@Summary		delete todo
+//	@Description	delete todo
+//	@Tags			Todo
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Todo ID"
+//	@Success		200	{object}	domain.Response
+//	@Failure		400	{object}	domain.ErrorResponse
+//	@Failure		500	{object}	domain.ErrorResponse
+//	@Security		Bearer
+//	@Router			/users/todo [delete]
 func (c *TodoController) DeleteTodo(ctx *gin.Context) {
 	userID, _ := jwt.ExtractTokenID(ctx)
 	todoID, err := strconv.Atoi(ctx.Param("id"))
