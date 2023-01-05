@@ -1,7 +1,8 @@
 # peanut
 
-Golang template for API server
+A boilerplate for Golang backend
 
+[github.com/hungtrd](https://github.com/hungtrd)
 ## Setup
 
 - Install packages:\
