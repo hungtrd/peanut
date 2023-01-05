@@ -1,6 +1,8 @@
 package crypto
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"golang.org/x/crypto/bcrypt"
+)
 
 func HashString(s string) string {
 	hashed, _ := bcrypt.GenerateFromPassword([]byte(s), bcrypt.DefaultCost)

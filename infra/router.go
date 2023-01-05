@@ -56,11 +56,14 @@ func SetupServer(s *gorm.DB) Server {
 		userCtrl := controller.NewUserController(s)
 		users := v1.Group("/users")
 		{
-			users.GET("", userCtrl.GetUsers)
-			users.POST("", userCtrl.CreateUser)
-			users.GET("/:id", userCtrl.GetUser)
-			// users.PATCH("/:id", userCtrl.UpdateUser)
-			// users.DELETE("/:id", userCtrl.DeleteUserByID)
+			users.POST("/signup", userCtrl.SignUp)
+			users.POST("/login", userCtrl.Login)
+		}
+
+		bookCtrl := controller.NewBookController(s)
+		books := v1.Group("/books")
+		{
+			books.Use(middleware.JwtAuth()).POST("", bookCtrl.CreateBook)
 		}
 	}
 

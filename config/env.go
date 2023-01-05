@@ -19,7 +19,7 @@ const (
 var env = local
 
 func setEnv() {
-	envName := os.Getenv("PJ_ENV")
+	envName := os.Getenv("PEANUT_ENV")
 	switch strings.ToLower(envName) {
 	case "local":
 		env = local
@@ -32,9 +32,9 @@ func setEnv() {
 	case "production":
 		env = production
 	default:
-		panic("PJ_ENV unknown: " + envName + " (available env: local development staging production test)")
+		panic("PEANUT_ENV unknown: " + envName + " (available env: local/development/staging/production/test)")
 	}
-	fmt.Println("Running in [" + envName + "] environment")
+	fmt.Println("--- Running in [" + envName + "] environment")
 }
 
 func setGinMode() {

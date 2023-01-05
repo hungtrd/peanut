@@ -6,7 +6,7 @@ Golang template for API server
 
 - Install packages:\
   `$ go install`
-- Update `.env`
+- Copy `.env.example` to `.env` and update your enviroment
 - Install `air` for live-reload source code.\
   `$ go install github.com/cosmtrek/air@latest`
 - Run project:\
@@ -63,14 +63,22 @@ $ ginkgo ./...
 
 ## API docs:
 
+> URL: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
+
 - Install package:
   `$ go install github.com/swaggo/swag/cmd/swag@latest`
-- Generate docs folder:\
+- Generate docs folder:  
   Write annotations before main() function and run:\
   `$ swag init`
-- Generate API docs:\
-  Write annotations before gin controller and run:\
-  `$ swag init`
+- Generate API docs:  
+  Write annotations before gin controller and run:
+  ```
+  $ swag init
+  // If error, try
+  $ swag init --parseDependency --parseInternal
+  ```
+- Format annotations code:  
+  `$ swag fmt`
 
 ## Rules
 
