@@ -23,6 +23,22 @@ func bindJSON(ctx *gin.Context, obj interface{}) bool {
 	return false
 }
 
+func bind(ctx *gin.Context, obj interface{}) bool {
+	err := ctx.ShouldBind(obj)
+	if err == nil {
+		return true
+	}
+	_, ok := err.(validator.ValidationErrors)
+	if ok {
+		err = apierrors.New(apierrors.InvalidRequest, err)
+	} else {
+		err = apierrors.New(apierrors.BadParams, err)
+	}
+	ctx.Error(err).SetType(gin.ErrorTypeBind)
+
+	return false
+}
+
 func bindQueryParams(ctx *gin.Context, obj interface{}) bool {
 	err := ctx.ShouldBindQuery(obj)
 

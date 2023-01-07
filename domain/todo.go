@@ -8,7 +8,7 @@ import (
 type Todo struct {
 	gorm.Model
 	UserID  uint   `json:"user_id"`
-	Title   string `json:"title" binding:"required" gorm:"size:30"`
+	Title   string `json:"title" binding:"required,max=3"`
 	Content string `json:"content" binding:"required" gorm:"size:500"`
 } //@name Todo
 

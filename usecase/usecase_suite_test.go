@@ -19,8 +19,10 @@ var ctx context.Context
 var db *gorm.DB
 var userRepo *mock.MockUserRepo
 var todoRepo *mock.MockTodoRepo
+var contentRepo *mock.MockContentRepo
 var userUc usecase.UserUsecase
 var todoUc usecase.TodoUsecase
+var contentUc usecase.ContentUsecase
 
 func TestUsecase(t *testing.T) {
 	RegisterFailHandler(Fail)
@@ -47,4 +49,7 @@ var _ = BeforeSuite(func() {
 
 	todoRepo = mock.NewMockTodoRepo(ctrl)
 	todoUc = usecase.NewTodoUsecase(todoRepo)
+
+	contentRepo = mock.NewMockContentRepo(ctrl)
+	contentUc = usecase.NewContentUsecase(contentRepo)
 })

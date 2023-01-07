@@ -1,5 +1,35 @@
 basePath: /api/v1
 definitions:
+  Content:
+    properties:
+      aspect_ratio:
+        type: string
+      category:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      play_time:
+        type: string
+      resolution:
+        type: string
+      tag:
+        type: string
+      thumbnail:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - name
+    - thumbnail
+    type: object
   ErrorResponse:
     properties:
       code:
@@ -79,6 +109,58 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /contents:
+    get:
+      consumes:
+      - application/json
+      description: content
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Content'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: content
+      tags:
+      - Content
+    post:
+      consumes:
+      - application/json
+      description: content
+      parameters:
+      - description: Body
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/Content'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: content
+      tags:
+      - Content
   /login:
     post:
       consumes:
