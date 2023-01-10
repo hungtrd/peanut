@@ -25,6 +25,7 @@ type Server struct {
 func SetupServer(s *gorm.DB) Server {
 	// Init router
 	r := gin.New()
+	r.MaxMultipartMemory = 8 >> 20
 
 	// Global middleware
 	// Logger middleware will write the logs to gin.DefaultWriter even if you set with GIN_MODE=release.

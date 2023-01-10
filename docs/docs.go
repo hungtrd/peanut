@@ -73,13 +73,68 @@ const docTemplate = `{
                 "summary": "content",
                 "parameters": [
                     {
-                        "description": "Body",
-                        "name": "json",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Content"
-                        }
+                        "maxLength": 30,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "string",
+                        "name": "Name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "file",
+                        "name": "Thumbnail",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "Description",
+                        "in": "formData"
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "PlayTime",
+                        "in": "formData"
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "Resolution",
+                        "in": "formData"
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "AspectRatio",
+                        "in": "formData"
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "Tag",
+                        "in": "formData"
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "Category",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -613,7 +668,8 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 30
                 },
                 "play_time": {
                     "type": "string"

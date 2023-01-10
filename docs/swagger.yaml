@@ -15,6 +15,7 @@ definitions:
       id:
         type: integer
       name:
+        maxLength: 30
         type: string
       play_time:
         type: string
@@ -137,12 +138,54 @@ paths:
       - application/json
       description: content
       parameters:
-      - description: Body
-        in: body
-        name: json
+      - description: string
+        in: formData
+        maxLength: 30
+        minLength: 1
+        name: Name
         required: true
-        schema:
-          $ref: '#/definitions/Content'
+        type: string
+      - description: file
+        in: formData
+        name: Thumbnail
+        required: true
+        type: file
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: Description
+        type: string
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: PlayTime
+        type: string
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: Resolution
+        type: string
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: AspectRatio
+        type: string
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: Tag
+        type: string
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: Category
+        type: string
       produces:
       - application/json
       responses:

@@ -54,10 +54,17 @@ func (c *ContentController) ListContent(ctx *gin.Context) {
 //	@Tags			Content
 //	@Accept			json
 //	@Produce		json
-//	@Param			json	body		domain.Content	true	"Body"
-//	@Success		200		{object}	domain.Response
-//	@Failure		400		{object}	domain.ErrorResponse
-//	@Failure		500		{object}	domain.ErrorResponse
+//	@Param			Name		formData	string	true	"string"	minlength(1)	maxlength(30)
+//	@Param			Thumbnail	formData	file	true	"file"
+//	@Param			Description	formData	string	false	"string"	minlength(0)	maxlength(500)
+//	@Param			PlayTime	formData	string	false	"string"	minlength(0)	maxlength(500)
+//	@Param			Resolution	formData	string	false	"string"	minlength(0)	maxlength(500)
+//	@Param			AspectRatio	formData	string	false	"string"	minlength(0)	maxlength(500)
+//	@Param			Tag			formData	string	false	"string"	minlength(0)	maxlength(500)
+//	@Param			Category	formData	string	false	"string"	minlength(0)	maxlength(500)
+//	@Success		200			{object}	domain.Response
+//	@Failure		400			{object}	domain.ErrorResponse
+//	@Failure		500			{object}	domain.ErrorResponse
 //	@Router			/contents [post]
 func (c *ContentController) CreateContent(ctx *gin.Context) {
 	var content domain.CreateContent
