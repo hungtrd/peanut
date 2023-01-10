@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
-	"os"
 	"path/filepath"
+	"peanut/config"
 	"peanut/domain"
 	"peanut/pkg/filemanager"
 	"peanut/repository"
@@ -64,7 +64,7 @@ func (c *ContentController) CreateContent(ctx *gin.Context) {
 	if !bind(ctx, &content) {
 		return
 	}
-	if !filemanager.CheckMaxSizeUpload(int(content.Thumbnail.Size)) {
+	if int(content.Thumbnail.Size) > config.MaxSizeUpload {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "file size is too big!",
 		})
@@ -80,7 +80,7 @@ func (c *ContentController) CreateContent(ctx *gin.Context) {
 		return
 	}
 
-	err, path := filemanager.SaveUploadedFileTo(ctx, content.Thumbnail, os.Getenv("TMP_PATH"))
+	err, path := filemanager.SaveUploadedFileTo(ctx, content.Thumbnail, config.TmpPath)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
