@@ -8,21 +8,21 @@ import (
 
 type Content struct {
 	gorm.Model
-	Name        string `json:"name" binding:"required,max=30" gorm:"size:30"`
-	Thumbnail   string `json:"thumbnail" binding:"required"`
-	Description string `json:"description" gorm:"size:500"`
-	PlayTime    string `json:"play_time" gorm:"size:500"`
-	Resolution  string `json:"resolution" gorm:"size:500"`
-	AspectRatio string `json:"aspect_ratio" gorm:"size:500"`
-	Tag         string `json:"tag" gorm:"size:500"`
-	Category    string `json:"category" gorm:"size:500"`
+	Name        string    `json:"name" gorm:"size:30"`
+	Thumbnail   string    `json:"thumbnail"`
+	Description string    `json:"description" gorm:"size:500"`
+	PlayTime    time.Time `json:"play_time"`
+	Resolution  string    `json:"resolution" gorm:"size:500"`
+	AspectRatio string    `json:"aspect_ratio" gorm:"size:500"`
+	Tag         string    `json:"tag" gorm:"size:500"`
+	Category    string    `json:"category" gorm:"size:500"`
 } //@name Content
 
 type CreateContent struct {
 	Name        string                `form:"name" binding:"required,max=30" gorm:"size:30"`
 	Thumbnail   *multipart.FileHeader `form:"thumbnail" binding:"required"`
 	Description string                `form:"description" gorm:"size:500"`
-	PlayTime    string                `form:"play_time" gorm:"size:500"`
+	PlayTime    string                `form:"play_time" gorm:"size:500" binding:"datetime=2006-01-02 15:04:05"`
 	Resolution  string                `form:"resolution" gorm:"size:500"`
 	AspectRatio string                `form:"aspect_ratio" gorm:"size:500"`
 	Tag         string                `form:"tag" gorm:"size:500"`

@@ -15,7 +15,6 @@ definitions:
       id:
         type: integer
       name:
-        maxLength: 30
         type: string
       play_time:
         type: string
@@ -27,9 +26,6 @@ definitions:
         type: string
       updatedAt:
         type: string
-    required:
-    - name
-    - thumbnail
     type: object
   ErrorResponse:
     properties:

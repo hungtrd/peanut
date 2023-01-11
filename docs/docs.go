@@ -644,10 +644,6 @@ const docTemplate = `{
     "definitions": {
         "Content": {
             "type": "object",
-            "required": [
-                "name",
-                "thumbnail"
-            ],
             "properties": {
                 "aspect_ratio": {
                     "type": "string"
@@ -668,8 +664,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "name": {
-                    "type": "string",
-                    "maxLength": 30
+                    "type": "string"
                 },
                 "play_time": {
                     "type": "string"

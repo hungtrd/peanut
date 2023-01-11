@@ -3,7 +3,9 @@ package usecase
 import (
 	"context"
 	"peanut/domain"
+	"peanut/pkg/apierrors"
 	"peanut/repository"
+	"time"
 )
 
 type ContentUsecase interface {
@@ -23,7 +25,7 @@ func (c contentUsecase) GetContents(ctx context.Context) (contents []domain.Cont
 	return contents, nil
 }
 
-func (c contentUsecase) CreateContent(ctx context.Context, content domain.CreateContent, filePath string) error {
+func (c contentUsecase) CreateContent(ctx context.Context, content domain.CreateContent, filePath string) (err error) {
 	data := domain.Content{
 		Name:        content.Name,
 		Thumbnail:   filePath,
@@ -32,12 +34,16 @@ func (c contentUsecase) CreateContent(ctx context.Context, content domain.Create
 		Category:    content.Category,
 		Resolution:  content.Resolution,
 		AspectRatio: content.AspectRatio,
-		PlayTime:    content.PlayTime,
+	}
+	data.PlayTime, err = time.Parse("2006-01-02 15:04:05", content.PlayTime)
+	if err != nil {
+		err = apierrors.NewErrorf(apierrors.InternalError, err.Error())
+		return
 	}
 
-	err := c.ContentRepo.CreateContent(data)
+	err = c.ContentRepo.CreateContent(data)
 	if err != nil {
-		return err
+		return
 	}
 	return nil
 }
