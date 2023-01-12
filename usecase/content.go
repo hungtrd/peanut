@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"peanut/config"
 	"peanut/domain"
 	"peanut/pkg/apierrors"
 	"peanut/repository"
@@ -35,7 +36,7 @@ func (c contentUsecase) CreateContent(ctx context.Context, content domain.Create
 		Resolution:  content.Resolution,
 		AspectRatio: content.AspectRatio,
 	}
-	data.PlayTime, err = time.Parse("2006-01-02 15:04:05", content.PlayTime)
+	data.PlayTime, err = time.Parse(config.TimeFormatDefault, content.PlayTime)
 	if err != nil {
 		err = apierrors.NewErrorf(apierrors.InternalError, err.Error())
 		return
