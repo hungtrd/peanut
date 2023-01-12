@@ -87,7 +87,7 @@ func (c *ContentController) CreateContent(ctx *gin.Context) {
 		return
 	}
 
-	err, path := filemanager.SaveUploadedFileTo(ctx, content.Thumbnail, config.TmpPath)
+	err, path := SaveUploadedFileTo(ctx, content.Thumbnail, config.TmpPath)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
