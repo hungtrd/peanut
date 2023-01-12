@@ -10,6 +10,7 @@ import (
 
 func init() {
 	loadEnv()
+	getConfig()
 }
 
 func Setup() {

@@ -63,16 +63,12 @@ func (c *TodoController) ListTodo(ctx *gin.Context) {
 //	@Router			/users/todo [get]
 func (c *TodoController) CreateTodo(ctx *gin.Context) {
 	todo := domain.Todo{}
-	err := ctx.ShouldBindJSON(&todo)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+	if !bindJSON(ctx, &todo) {
 		return
 	}
 
 	userID, _ := jwt.ExtractTokenID(ctx)
-	err = c.Todo.CreateTodo(userID, todo)
+	err := c.Todo.CreateTodo(userID, todo)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),

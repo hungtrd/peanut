@@ -1,5 +1,32 @@
 basePath: /api/v1
 definitions:
+  Content:
+    properties:
+      aspect_ratio:
+        type: string
+      category:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      play_time:
+        type: string
+      resolution:
+        type: string
+      tag:
+        type: string
+      thumbnail:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   ErrorResponse:
     properties:
       code:
@@ -79,6 +106,100 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /contents:
+    get:
+      consumes:
+      - application/json
+      description: content
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Content'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: content
+      tags:
+      - Content
+    post:
+      consumes:
+      - application/json
+      description: content
+      parameters:
+      - description: string
+        in: formData
+        maxLength: 30
+        minLength: 1
+        name: Name
+        required: true
+        type: string
+      - description: file
+        in: formData
+        name: Thumbnail
+        required: true
+        type: file
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: Description
+        type: string
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: PlayTime
+        type: string
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: Resolution
+        type: string
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: AspectRatio
+        type: string
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: Tag
+        type: string
+      - description: string
+        in: formData
+        maxLength: 500
+        minLength: 0
+        name: Category
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: content
+      tags:
+      - Content
   /login:
     post:
       consumes:

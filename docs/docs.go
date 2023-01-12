@@ -25,6 +25,140 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/contents": {
+            "get": {
+                "description": "content",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Content"
+                ],
+                "summary": "content",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Content"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "content",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Content"
+                ],
+                "summary": "content",
+                "parameters": [
+                    {
+                        "maxLength": 30,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "string",
+                        "name": "Name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "file",
+                        "name": "Thumbnail",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "Description",
+                        "in": "formData"
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "PlayTime",
+                        "in": "formData"
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "Resolution",
+                        "in": "formData"
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "AspectRatio",
+                        "in": "formData"
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "Tag",
+                        "in": "formData"
+                    },
+                    {
+                        "maxLength": 500,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "string",
+                        "name": "Category",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "login",
@@ -508,6 +642,47 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "Content": {
+            "type": "object",
+            "properties": {
+                "aspect_ratio": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "play_time": {
+                    "type": "string"
+                },
+                "resolution": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "thumbnail": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "ErrorResponse": {
             "type": "object",
             "properties": {
